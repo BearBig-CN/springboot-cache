@@ -48,6 +48,7 @@ public class StudentDAO extends AbstractBasicDAO<Student> {
     @Override
     protected Student generatorE(ResultSet resultSet, int i) throws SQLException {
         return Student.builder()
+                .stuId(resultSet.getInt("stu_id"))
                 .name(resultSet.getString("stu_name"))
                 .age(resultSet.getInt("stu_age"))
                 .birthday(resultSet.getDate("stu_birthday"))
