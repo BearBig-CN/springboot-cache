@@ -7,14 +7,14 @@
 		<artifactId>springboot-redis</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>redis-data-access-demo</artifactId>
-	<name>redis-data-access-demo</name>
-	<description>演示在Springboot中访问MySQL数据库，并将数据cached到Redis中（Redis单机模式）</description>
+	<artifactId>caching-demo</artifactId>
+	<name>caching-demo</name>
+	<description>演示在Springboot中访问MySQL数据库，使用spring自带的缓存功能缓存数据</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
+			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
