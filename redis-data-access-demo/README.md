@@ -1,0 +1,1 @@
+演示在SpringBoot中，访问MySQL数据库，手动控制数据存入到Redis缓存中(Redis为单机模式)
