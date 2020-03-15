@@ -1,2 +1,2 @@
-# springboot-redis
-演示在Springboot中访问Redis的相关操作.
+# springboot-cache
+演示在Springboot中使用各种缓存技术.
