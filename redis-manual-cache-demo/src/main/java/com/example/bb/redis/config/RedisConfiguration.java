@@ -1,9 +1,12 @@
 package com.example.bb.redis.config;
 
+import com.example.bb.common.domain.Student;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.ValueOperations;
+
+import java.util.List;
 
 /**
  * Redis配置类，创建自定义的RedisTemplate对象
@@ -15,14 +18,19 @@ import org.springframework.data.redis.core.ValueOperations;
 public class RedisConfiguration {
 
     @Bean
-    public CustomRedisTemplate<Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        CustomRedisTemplate<Object> redisTemplate = new CustomRedisTemplate<>();
+    public <V> CustomRedisTemplate redisTemplate(RedisConnectionFactory redisConnectionFactory) {
+        CustomRedisTemplate<V> redisTemplate = new CustomRedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         return redisTemplate;
     }
 
     @Bean
-    public ValueOperations<String, Object> redisOperations(CustomRedisTemplate<Object> customRedisTemplate) {
+    public ValueOperations<String, Student> redisOperations(CustomRedisTemplate<Student> customRedisTemplate) {
+        return customRedisTemplate.opsForValue();
+    }
+
+    @Bean
+    public ValueOperations<String, List<Student>> redisListOperations(CustomRedisTemplate<List<Student>> customRedisTemplate) {
         return customRedisTemplate.opsForValue();
     }
 }

@@ -1,6 +1,7 @@
 package com.example.bb.redis.util;
 
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.util.List;
@@ -17,7 +18,8 @@ public class DataCacheUtil {
     private static final String END_WITH_STR = "all";
 
     /**
-     * 缓存数据
+     * 缓存单个数据
+     * 如果缓存以及存在，则覆盖，否则新增
      *
      * @param valueOps redis操作对象
      * @param key      键
@@ -25,7 +27,7 @@ public class DataCacheUtil {
      * @param timeout  过期时间
      * @param <V>      存入缓存的对象
      */
-    public static <V> void cachedData(ValueOperations<String, Object> valueOps, String key, V value, long timeout) {
+    public static <V> void cachedData(ValueOperations<String, V> valueOps, String key, V value, long timeout) {
         if (ObjectUtils.isEmpty(key)) {
             throw new NullPointerException("key not be null!");
         }
@@ -33,22 +35,36 @@ public class DataCacheUtil {
         if (ObjectUtils.isEmpty(value)) {
             return;
         }
+        // 新增或者覆盖
+        valueOps.set(key, value, timeout, TimeUnit.SECONDS);
+    }
+
+    public static <V> void cachedListData(ValueOperations<String, List<V>> valueOps, String key, List<V> values, long timeout) {
+        if (ObjectUtils.isEmpty(key)) {
+            throw new NullPointerException("key not be null!");
+        }
+
+        if (CollectionUtils.isEmpty(values)) {
+            return;
+        }
 
         // 获取redis中的数据
-        Object cacheResult = valueOps.get(key);
-        if (!ObjectUtils.isEmpty(cacheResult)) {
-            if (cacheResult instanceof List) {
-                List<V> vList = (List<V>) cacheResult;
-                vList.add(value);
-                // 更新list后，再覆盖
-                valueOps.set(key, vList, timeout, TimeUnit.SECONDS);
-            }
+        List<V> cacheResult = valueOps.get(key);
+        if (CollectionUtils.isEmpty(cacheResult)) {
+            cacheResult = values;
         } else {
-            if (key.endsWith(END_WITH_STR) && !(value instanceof List)) {
-                return;
-            }
-            // 新增或者覆盖
-            valueOps.set(key, value, timeout, TimeUnit.SECONDS);
+            // 合并list
+            cacheResult.addAll(values);
         }
+        // 覆盖缓存
+        valueOps.set(key, cacheResult, timeout, TimeUnit.SECONDS);
+    }
+
+    public static void removeCacheData(ValueOperations valueOps, String key) {
+        if (ObjectUtils.isEmpty(key)) {
+            throw new NullPointerException("key not be null!");
+        }
+        // 获取redis中的数据
+        valueOps.set(key, null, 1, TimeUnit.SECONDS);
     }
 }
