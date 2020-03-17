@@ -1,0 +1,1 @@
+演示在SpringBoot中使用缓存技术, 数据底层由ConcurrentHashMap保存。

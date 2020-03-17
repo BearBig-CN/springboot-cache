@@ -20,6 +20,7 @@
 	</properties>
 
 	<modules>
+		<module>common</module>
 		<module>simple-cache-demo</module>
 		<module>ehcache-cache-demo</module>
 		<module>redis-manual-cache-demo</module>

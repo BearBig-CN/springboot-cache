@@ -1,4 +1,4 @@
-package com.example.bb.redis.domain;
+package com.example.bb.common.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Student implements Serializable {
     /** 学生编号 */
-    private int stuId;
+    private String stuId;
     /** 姓名 */
     private String name;
     /** 年龄 */
